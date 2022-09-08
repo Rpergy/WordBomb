@@ -1,3 +1,4 @@
+from time import sleep
 import pyautogui
 from pynput.keyboard import Key, Controller
 import cv2
@@ -8,28 +9,34 @@ from PIL import Image
 pytesseract.pytesseract.tesseract_cmd = r'C:\\Program Files\\Tesseract-OCR\\tesseract.exe'
 keyboard = Controller()
 foundWord = 0
+usedWords = []
 
 def checkforturn():
-    textboxScreenshot = pyautogui.screenshot(region=(525,990,100,100))
+    textboxScreenshot = pyautogui.screenshot(region=(306,1012,100,100))
     textboxScreenshot.save(r'images/turn.png')
     textBoxImg = Image.open('images/turn.png') 
     pix = textBoxImg.load() 
-    if pix[0,0] == (23, 19, 17):
+    if pix[0,0] == (21, 18, 16):
         return True
     else:
         return False
 
 def captureSymbol():
-    symbolScreenshot = pyautogui.screenshot(region=(777,538,70,30))
+    symbolScreenshot = pyautogui.screenshot(region=(700,600,70,30))
     symbolScreenshot.save(r'images/symbol.png')
     symbolImage = cv2.imread('images/symbol.png')
     symbolText = pytesseract.image_to_string(symbolImage, config='--psm 7', lang='eng')
     symbol = [*symbolText.lower()]
     symbol.remove('\n')
+    for i in range(len(symbol)):
+        if symbol[i] == '0':
+            symbol[i] = 'o'
+        elif symbol[i] == '1':
+            symbol[i] = 'l'
     return symbol
 
 
-wordsFile = open('tryWords.txt', 'r')
+wordsFile = open('newWords.txt', 'r')
 wordsFileList = wordsFile.readlines()
 while True:
     if checkforturn():
@@ -37,16 +44,16 @@ while True:
         print(symbol)
 
         for i in range(2804):
-            if foundWord == 1:
-                foundWord = 0;
-                break;
-
             currentWord = wordsFileList[i].replace('\n', '')
-            splitWord = [*currentWord.lower()]
-            if len(symbol) == 2:
+            if usedWords.count(currentWord) == 0:
+                if foundWord == 1:
+                    foundWord = 0;
+                    break
+
+                splitWord = [*currentWord.lower()]
                 for c in range(len(currentWord)):
                     if c > len(currentWord) - len(symbol):
-                        break;
+                        break
 
                     if splitWord[c] == symbol[0]:
                         if(splitWord[c + 1] == symbol[1]):
@@ -54,16 +61,15 @@ while True:
                                 print("Found Word:", currentWord)
                                 pyautogui.write(currentWord, interval=0.1)
                                 keyboard.press(Key.enter)
+                                usedWords.append(currentWord)
                                 foundWord = 1
-                                break;
+                                break
                             else:
                                 if(splitWord[c + 2] == symbol[2]):
                                     print("Found Word:", currentWord)
                                     pyautogui.write(currentWord, interval=0.1)
                                     keyboard.press(Key.enter)
+                                    usedWords.append(currentWord)
                                     foundWord = 1
-                                    break;
-                        else:
-                            break
-                    else:
-                        break
+                                    break
+    sleep(1)
