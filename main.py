@@ -12,35 +12,31 @@ foundWord = 0
 usedWords = []
 
 def checkforturn():
-    textboxScreenshot = pyautogui.screenshot(region=(306,1012,100,100))
+    textboxScreenshot = pyautogui.screenshot(region=(535,994,100,100)) # Here is where the coordinates for the textbox should go (replace the first two numbers)
     textboxScreenshot.save(r'images/turn.png')
     textBoxImg = Image.open('images/turn.png') 
     pix = textBoxImg.load() 
-    if pix[0,0] == (21, 18, 16):
+    if pix[0,0] == (24, 20, 18): #Replace this tuple with the result from testColor.py
         return True
     else:
         return False
 
 def captureSymbol():
-    symbolScreenshot = pyautogui.screenshot(region=(700,600,70,30))
+    symbolScreenshot = pyautogui.screenshot(region=(775,540,70,30)) # Here is where the coordinates for the symbol should go (replace the first two numbers)
     symbolScreenshot.save(r'images/symbol.png')
     symbolImage = cv2.imread('images/symbol.png')
     symbolText = pytesseract.image_to_string(symbolImage, config='--psm 7', lang='eng')
-    symbol = [*symbolText.lower()]
-    symbol.remove('\n')
-    for i in range(len(symbol)):
-        if symbol[i] == '0':
-            symbol[i] = 'o'
-        elif symbol[i] == '1':
-            symbol[i] = 'l'
-    return symbol
+    symbolText.replace('0', 'o')
+    symbolText.replace('1', 'i')
+    symbolText.replace('\n', '')
+    return symbolText.lower()
 
 
-wordsFile = open('shortWords.txt', 'r')
+wordsFile = open('words.txt', 'r')
 wordsFileList = wordsFile.readlines()
 while True:
     if checkforturn():
-        symbol = captureSymbol()
+        symbol = captureSymbol().replace('\n', '')
         print(symbol)
 
         for i in range(56390):
@@ -49,27 +45,12 @@ while True:
                 if foundWord == 1:
                     foundWord = 0;
                     break
-
-                splitWord = [*currentWord.lower()]
-                for c in range(len(currentWord)):
-                    if c > len(currentWord) - len(symbol):
-                        break
-
-                    if splitWord[c] == symbol[0]:
-                        if(splitWord[c + 1] == symbol[1]):
-                            if len(symbol) == 2:
-                                print("Found Word:", currentWord)
-                                pyautogui.write(currentWord, interval=0.09)
-                                keyboard.press(Key.enter)
-                                usedWords.append(currentWord)
-                                foundWord = 1
-                                break
-                            else:
-                                if(splitWord[c + 2] == symbol[2]):
-                                    print("Found Word:", currentWord)
-                                    pyautogui.write(currentWord, interval=0.09)
-                                    keyboard.press(Key.enter)
-                                    usedWords.append(currentWord)
-                                    foundWord = 1
-                                    break
+                
+                if symbol in currentWord:
+                    print("Found Word:", currentWord)
+                    pyautogui.write(currentWord, interval=0.01)
+                    keyboard.press(Key.enter)
+                    usedWords.append(currentWord)
+                    foundWord = 1
+                    break
     sleep(1)
