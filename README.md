@@ -7,7 +7,7 @@ Note: Coordinates will probably not work on your computer, as they change based 
   use those coordinates on the line that has the "Replace Coords Here" comment, and it should work
   MAKE SURE TO DO THIS FOR BOTH THE SYMBOL DETECTION AND THE TEXTBOX DETECTION
   Here is an example of what the box for the symbol should look like
-  ![An example of the proper symbol screenshot](images/readme_symbol.jpg)
+  ![An example of the proper symbol screenshot](images/readme_symbol.png)
 
 if the program isn't recognizing the textbox, visit "testColor.py" and read the instructions on there.
 
