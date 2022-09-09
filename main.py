@@ -36,14 +36,14 @@ def captureSymbol():
     return symbol
 
 
-wordsFile = open('newWords.txt', 'r')
+wordsFile = open('shortWords.txt', 'r')
 wordsFileList = wordsFile.readlines()
 while True:
     if checkforturn():
         symbol = captureSymbol()
         print(symbol)
 
-        for i in range(2804):
+        for i in range(56390):
             currentWord = wordsFileList[i].replace('\n', '')
             if usedWords.count(currentWord) == 0:
                 if foundWord == 1:
@@ -59,7 +59,7 @@ while True:
                         if(splitWord[c + 1] == symbol[1]):
                             if len(symbol) == 2:
                                 print("Found Word:", currentWord)
-                                pyautogui.write(currentWord, interval=0.1)
+                                pyautogui.write(currentWord, interval=0.09)
                                 keyboard.press(Key.enter)
                                 usedWords.append(currentWord)
                                 foundWord = 1
@@ -67,7 +67,7 @@ while True:
                             else:
                                 if(splitWord[c + 2] == symbol[2]):
                                     print("Found Word:", currentWord)
-                                    pyautogui.write(currentWord, interval=0.1)
+                                    pyautogui.write(currentWord, interval=0.09)
                                     keyboard.press(Key.enter)
                                     usedWords.append(currentWord)
                                     foundWord = 1
