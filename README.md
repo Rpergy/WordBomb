@@ -16,7 +16,7 @@ Note: Coordinates will probably not work on your computer, as they change based 
   
   ![An example of the proper symbol screenshot](images/readme_symbol.png)
 
-if the program isn't recognizing the textbox, visit "testColor.py" and read the instructions on there.
+if the program isn't recognizing the input box, visit "testColor.py" and read the instructions on there.
 
 
 Hopefully i can make this project better by implementing a better OCR (i hate you pytesseract) and writing some sort of algorithm that will favor words with characters that havent been used yet. 
