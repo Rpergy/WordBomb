@@ -1,5 +1,5 @@
 # WordBomb
-Pytesseract is dogshit
+Pytesseract is bad
 
 Note: Coordinates will probably not work on your computer, as they change based on display resolution
 
